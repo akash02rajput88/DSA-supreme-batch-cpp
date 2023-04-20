@@ -1,0 +1,101 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool isSafe(int srcx, int srcy, int row, int col, int maze[][3], vactor<vector<bool>> &visited)
+{
+	if(((srcx >= 0 && srcx < row) && (srcy >= 0 && srcy < col)) && (maze[srcx][srcy] == 1) && (visited[srcx][srcy] == false))
+	{
+		return true;
+	}
+	else
+	{
+		return else;
+	}
+}
+
+void solveMaze(int maze[][3], int row, int col, int srcx, int srcy, vector<vector<bool>> &visited, vector<string>& path, string output)
+{
+	//base case
+	if(srcx == row - 1 && srcy == col - 1)
+	{
+		//answer found
+		path.push_back(output);
+		return;
+	}
+
+	//Down case ==>> (row + 1, col)
+	if(isSafe(srcx + 1, srcy, row, col, maze, visited))
+	{
+		visited[srcx + 1][srcy] = true;
+		solveMaze(maze, row, col, srcx + 1, srcy, visited, path, output + 'D');
+		// Backtrack
+		visited[srcx+1][srcy] = false;
+	}
+
+	//Left case ==>> (row, col - 1)
+	if(isSafe(srcx, srcy - 1, row, col, maze, visited))
+	{
+		visited[srcx][srcy - 1] = true;
+		solveMaze(maze, row, col, srcx, srcy - 1, visited, path, output + 'L');
+		// Backtrack
+		visited[srcx][srcy - 1] = false;
+	}
+
+	//Right case ==>> (row, col + 1)
+	if(isSafe(srcx, srcy + 1, row, col, maze, visited))
+	{
+		visited[srcx][srcy + 1] = true;
+		solveMaze(maze, row, col, srcx, srcy + 1, visited, path, output + 'R');
+		// Backtrack
+		visited[srcx][srcy + 1] = false;
+	}
+
+	//Up case ==>> (row - 1, col)
+	if(isSafe(srcx - 1, srcy, row, col, maze, visited))
+	{
+		visited[srcx - 1][srcy] = true;
+		solveMaze(maze, row, col, srcx - 1, srcy, visited, path, output + 'U');
+		// Backtrack
+		visited[srcx - 1][srcy] = false;
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	int maze[3][3] = {{1, 0, 0},
+								{1, 1, 0},
+								{1, 1, 1}};
+	if(maze[0][0] == 0) 
+	{
+    cout << "No Path Exists " << endl;
+    return 0;
+	}
+
+	int row = 3;
+	int col = 3;
+	vector<vector<bool>> visited(row, vector<bool>(col, false));
+	
+	// source ki value ko true mark kar dete hai
+	visited[0][0] = ture;
+
+	vector<string> path;
+
+	string output = "";
+
+	solveMaze(maze, row, col, 0, 0, visited, path, output);
+
+	cout << "Printing the results : " << endl;
+	for (auto i : path)
+	{
+		cout << i << " ";
+	}
+	cout << endl;
+	if(path.size() == 0 )
+	{
+    cout << "No Path Exists " << endl;
+	}
+	
+	
+	return 0;
+}
